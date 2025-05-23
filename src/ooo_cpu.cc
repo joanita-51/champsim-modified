@@ -33,10 +33,12 @@
 std::chrono::seconds elapsed_time();
 
 constexpr long long STAT_PRINTING_PERIOD = 10000000;
+void simulate_context_switch(uint64_t cycle, bool verbose=true);
 
 long O3_CPU::operate()
 {
   long progress{0};
+  simulate_context_switch(current_time.time_since_epoch()/ clock_period, true);
   progress += retire_rob();                    // retire
   progress += complete_inflight_instruction(); // finalize execution
   progress += execute_instruction();           // execute instructions
